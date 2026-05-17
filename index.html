@@ -592,10 +592,22 @@ Send
 
 const API = "https://student-learning-system-r6bi.onrender.com";
 
-let xp = 0;
-let conf = 50;
-let streak = 1;
-let chapters = 0;
+/* STATE */
+
+let xp =
+parseInt(localStorage.getItem("xp")) || 0;
+
+let conf =
+parseInt(localStorage.getItem("conf")) || 50;
+
+let streak =
+parseInt(localStorage.getItem("streak")) || 1;
+
+let chapters =
+parseInt(localStorage.getItem("chapters")) || 0;
+
+
+
 
 let graphData = JSON.parse(
 localStorage.getItem("graph")
@@ -669,6 +681,30 @@ JSON.stringify(graphData)
 
 async function learn(){
 
+let name =
+document.getElementById("name").value;
+
+let cls =
+document.getElementById("cls").value;
+
+let sub =
+document.getElementById("sub").value;
+
+let chap =
+document.getElementById("chap").value;
+
+if(!name || !cls || !sub || !chap){
+
+alert("Fill all fields 🚀");
+return;
+
+}
+
+document.getElementById("lesson").innerHTML =
+"⚡ Generating ICSE lesson...";
+
+try{
+
 let res = await fetch(API + "/learn",{
 
 method:"POST",
@@ -679,21 +715,84 @@ headers:{
 
 body:JSON.stringify({
 
-student_name:
-document.getElementById("name").value,
-
-student_class:
-document.getElementById("cls").value,
-
-subject:
-document.getElementById("sub").value,
-
-chapter:
-document.getElementById("chap").value
+student_name:name,
+student_class:cls,
+subject:sub,
+chapter:chap
 
 })
 
 });
+
+let data = await res.json();
+
+document.getElementById("lesson").innerHTML =
+marked.parse(data.lesson || "No lesson");
+
+
+
+/* AUTO SAVE CHAPTER */
+
+await fetch(API + "/save-chapter",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+student_name:name,
+student_class:cls,
+subject:sub,
+chapter:chap
+
+})
+
+});
+
+
+
+/* ANALYTICS */
+
+xp += 10;
+
+conf += 3;
+
+chapters += 1;
+
+streak += 1;
+
+graphData.push(conf);
+
+
+
+/* SAVE LOCAL */
+
+localStorage.setItem("xp",xp);
+
+localStorage.setItem("conf",conf);
+
+localStorage.setItem("chapters",chapters);
+
+localStorage.setItem("streak",streak);
+
+update();
+
+renderChart();
+
+}
+
+catch(err){
+
+document.getElementById("lesson").innerHTML =
+"❌ Backend Error";
+
+}
+
+}
+
 
 let data = await res.json();
 
@@ -752,7 +851,9 @@ doc.save("ExamPanic_Lesson.pdf");
 
 }
 
-let chat = [];
+let chat = JSON.parse(
+localStorage.getItem("chatHistory")
+) || [];
 
 async function askAI(){
 
@@ -767,6 +868,10 @@ text:msg
 });
 
 renderChat();
+localStorage.setItem(
+"chatHistory",
+JSON.stringify(chat)
+);  
 
 document.getElementById("msg").value="";
 
