@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +16,10 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- PDF LIBRARY -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 
 *{
@@ -25,8 +28,6 @@ padding:0;
 box-sizing:border-box;
 font-family:Poppins,sans-serif;
 }
-
-/* BODY */
 
 body{
 
@@ -49,8 +50,6 @@ overflow-x:hidden;
 
 }
 
-/* BACKGROUND */
-
 @keyframes bgMove{
 
 0%{
@@ -66,8 +65,6 @@ background-position:0% 50%;
 }
 
 }
-
-/* ORBS */
 
 .orb{
 
@@ -104,8 +101,6 @@ right:-50px;
 
 }
 
-/* HEADER */
-
 header{
 
 text-align:center;
@@ -131,8 +126,6 @@ opacity:0.7;
 margin-top:10px;
 
 }
-
-/* HERO */
 
 .hero{
 
@@ -160,8 +153,6 @@ font-size:18px;
 
 }
 
-/* BADGE */
-
 .badge{
 
 display:inline-block;
@@ -183,14 +174,10 @@ box-shadow:
 
 }
 
-/* CONTAINER */
-
 .container{
 max-width:1200px;
 margin:auto;
 }
-
-/* GRID */
 
 .grid{
 
@@ -201,8 +188,6 @@ grid-template-columns:1fr 1fr;
 gap:15px;
 
 }
-
-/* CARD */
 
 .card{
 
@@ -233,8 +218,6 @@ box-shadow:
 0 0 50px rgba(56,189,248,0.18);
 
 }
-
-/* DASHBOARD */
 
 .stats{
 
@@ -278,8 +261,6 @@ color:#38bdf8;
 
 }
 
-/* INPUT */
-
 input,
 select{
 
@@ -304,8 +285,6 @@ outline:none;
 border:1px solid rgba(255,255,255,0.05);
 
 }
-
-/* BUTTON */
 
 button{
 
@@ -347,7 +326,17 @@ box-shadow:
 
 }
 
-/* LESSON */
+.pdf-btn{
+
+background:linear-gradient(
+45deg,
+#9333ea,
+#7e22ce
+);
+
+color:white;
+
+}
 
 #lesson{
 
@@ -367,8 +356,6 @@ min-height:120px;
 
 }
 
-/* CHAT */
-
 .chat{
 
 height:320px;
@@ -386,8 +373,6 @@ margin-top:12px;
 border:1px solid rgba(255,255,255,0.05);
 
 }
-
-/* MESSAGE */
 
 .msg{
 
@@ -419,8 +404,6 @@ border-left:4px solid #9333ea;
 
 }
 
-/* ANIMATION */
-
 @keyframes fade{
 
 from{
@@ -435,8 +418,6 @@ transform:translateY(0);
 
 }
 
-/* CHART */
-
 canvas{
 
 background:#0f172a;
@@ -448,8 +429,6 @@ border-radius:18px;
 margin-top:10px;
 
 }
-
-/* MOBILE */
 
 @media(max-width:768px){
 
@@ -477,14 +456,10 @@ font-size:38px;
 
 <body>
 
-<!-- ORBS -->
-
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
 
 <div class="container">
-
-<!-- HEADER -->
 
 <header>
 
@@ -513,8 +488,6 @@ Your futuristic AI classroom built for ICSE students.
 
 </header>
 
-<!-- LIVE STATUS -->
-
 <div class="card">
 
 🟢 AI Engine Online<br><br>
@@ -524,8 +497,6 @@ Your futuristic AI classroom built for ICSE students.
 🌍 Active Students: 1,284
 
 </div>
-
-<!-- DASHBOARD -->
 
 <div class="card">
 
@@ -555,8 +526,6 @@ Chapters
 
 </div>
 
-<!-- GRAPH -->
-
 <div class="card">
 
 <h3>📊 Progress Graph</h3>
@@ -566,8 +535,6 @@ Chapters
 </div>
 
 <div class="grid">
-
-<!-- LEARN -->
 
 <div class="card">
 
@@ -585,13 +552,15 @@ Chapters
 Generate Lesson
 </button>
 
+<button onclick="downloadPDF()" class="pdf-btn">
+📄 Download PDF
+</button>
+
 <div id="lesson">
 AI lesson will appear here...
 </div>
 
 </div>
-
-<!-- CHAT -->
 
 <div class="card">
 
@@ -623,20 +592,14 @@ Send
 
 const API = "https://student-learning-system-r6bi.onrender.com";
 
-/* STATE */
-
 let xp = 0;
 let conf = 50;
 let streak = 1;
 let chapters = 0;
 
-/* GRAPH */
-
 let graphData = JSON.parse(
 localStorage.getItem("graph")
 ) || [10,20,35];
-
-/* CHART */
 
 let chart;
 
@@ -684,8 +647,6 @@ responsive:true
 
 }
 
-/* UPDATE */
-
 function update(){
 
 document.getElementById("xp").innerText = xp;
@@ -705,8 +666,6 @@ JSON.stringify(graphData)
 );
 
 }
-
-/* LEARN */
 
 async function learn(){
 
@@ -758,7 +717,40 @@ renderChart();
 
 }
 
-/* CHAT */
+/* PDF DOWNLOAD */
+
+async function downloadPDF(){
+
+let lesson =
+document.getElementById("lesson").innerText;
+
+if(
+!lesson ||
+lesson.includes("AI lesson will appear here")
+){
+
+alert("Generate lesson first 🚀");
+
+return;
+
+}
+
+const { jsPDF } = window.jspdf;
+
+const doc = new jsPDF();
+
+doc.setFont("helvetica");
+
+doc.setFontSize(12);
+
+let lines =
+doc.splitTextToSize(lesson,180);
+
+doc.text(lines,15,20);
+
+doc.save("ExamPanic_Lesson.pdf");
+
+}
 
 let chat = [];
 
@@ -806,8 +798,6 @@ message: mode + ": " + msg
 
 let data = await res.json();
 
-/* REMOVE THINKING */
-
 chat.pop();
 
 chat.push({
@@ -844,8 +834,6 @@ renderChat();
 
 }
 
-/* RENDER CHAT */
-
 function renderChat(){
 
 let box =
@@ -868,8 +856,6 @@ ${marked.parse(m.text)}
 box.scrollTop = box.scrollHeight;
 
 }
-
-/* INIT */
 
 update();
 
