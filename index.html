@@ -1,313 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚀 ExamPanic OS v3 FINAL</title>
-
-<meta name="theme-color" content="#020617">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>AI Study OS 🔥 Viral</title>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;}
-
 body{
-background:#020617;
+margin:0;
+font-family:Arial;
+background:#0b1220;
 color:white;
-padding:15px;
-min-height:100vh;
+padding:20px;
 }
-
-.container{max-width:1200px;margin:auto;}
 
 .card{
 background:#111827;
-padding:20px;
-border-radius:18px;
+padding:15px;
+border-radius:15px;
 margin-bottom:15px;
 }
 
-input,select{
+input,button{
 width:100%;
 padding:12px;
 margin-top:10px;
 border-radius:10px;
-background:#0f172a;
 border:none;
-color:white;
 }
 
 button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:10px;
-background:linear-gradient(45deg,#38bdf8,#0ea5e9);
-font-weight:700;
+background:linear-gradient(45deg,#38bdf8,#9333ea);
+font-weight:bold;
 cursor:pointer;
 }
 
-.pdf-btn{
-background:linear-gradient(45deg,#9333ea,#7e22ce);
-color:white;
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-}
-
-.stat{
-background:#0f172a;
+.meme{
+background:#1f2937;
 padding:10px;
 border-radius:10px;
-text-align:center;
+margin-top:10px;
 }
 
-.chat{
-height:300px;
-overflow:auto;
-background:#0f172a;
-padding:10px;
-border-radius:12px;
+.small{
+opacity:0.7;
+font-size:12px;
 }
-
-.msg{padding:10px;margin-top:8px;border-radius:10px;}
-
-.user{background:#1e293b;}
-.ai{background:#111827;border-left:3px solid #9333ea;}
-
-canvas{
-background:#0f172a;
-padding:10px;
-border-radius:12px;
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>🚀 ExamPanic OS v3</h1>
+<h2>🚀 AI Study + Meme + Viral OS</h2>
 
 <div class="card">
 
-<div class="stats">
-<div class="stat"><b id="xp">0</b><br>XP</div>
-<div class="stat"><b id="conf">50%</b><br>Confidence</div>
-<div class="stat"><b id="streak">1</b><br>Streak</div>
-<div class="stat"><b id="chapters">0</b><br>Chapters</div>
-</div>
+<input id="topic" placeholder="Enter Topic">
 
-</div>
+<button onclick="learn()">📚 Learn</button>
+<button onclick="makeMeme()">😂 Generate Meme</button>
+<button onclick="shareApp()">📤 Share App</button>
 
-<div class="card">
-<canvas id="chart"></canvas>
-</div>
-
-<div class="card">
-
-<input id="name" placeholder="Name">
-<input id="cls" placeholder="Class">
-<input id="sub" placeholder="Subject">
-<input id="chap" placeholder="Chapter">
-
-<button onclick="learn()">Generate Lesson</button>
-<button onclick="downloadPDF()" class="pdf-btn">Download PDF</button>
-
-<div id="lesson">AI lesson will appear here...</div>
+<div id="lesson"></div>
 
 </div>
 
 <div class="card">
-
-<select id="mode">
-<option>Teacher</option>
-<option>Coach</option>
-<option>Strict Coach</option>
-</select>
-
-<div class="chat" id="chat"></div>
-
-<input id="msg" placeholder="Ask anything">
-<button onclick="askAI()">Send</button>
-
-</div>
-
+<h3>😂 Meme Feed</h3>
+<div id="feed"></div>
 </div>
 
 <script>
 
 const API = "https://student-learning-system-r6bi.onrender.com";
 
-/* STATE */
 let xp = 0;
-let conf = 50;
-let streak = 1;
-let chapters = 0;
+let shares = 0;
 
-/* CHAT */
-let chat = JSON.parse(localStorage.getItem("chatHistory")) || [];
-
-/* GRAPH */
-let graphData = JSON.parse(localStorage.getItem("graph")) || [10,20,35];
-let chart;
-
-/* UPDATE UI */
-function update(){
-document.getElementById("xp").innerText = xp;
-document.getElementById("conf").innerText = conf + "%";
-document.getElementById("streak").innerText = streak;
-document.getElementById("chapters").innerText = chapters;
-localStorage.setItem("graph",JSON.stringify(graphData));
-}
-
-/* CHART */
-function renderChart(){
-
-const ctx = document.getElementById("chart");
-
-if(chart) chart.destroy();
-
-chart = new Chart(ctx,{
-type:"line",
-data:{
-labels:graphData.map((_,i)=>"Day "+(i+1)),
-datasets:[{
-label:"Confidence",
-data:graphData,
-borderColor:"#38bdf8",
-tension:0.4,
-fill:true
-}]
-}
-});
-
-}
-
-/* LEARN */
+/* 📚 LEARN */
 async function learn(){
+
+let topic = document.getElementById("topic").value;
+if(!topic) return;
 
 let res = await fetch(API+"/learn",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
-student_name:document.getElementById("name").value,
-student_class:document.getElementById("cls").value,
-subject:document.getElementById("sub").value,
-chapter:document.getElementById("chap").value
+student_name:"User",
+student_class:"8",
+subject:"AI Study",
+chapter:topic
 })
 });
 
 let data = await res.json();
 
 document.getElementById("lesson").innerHTML =
-marked.parse(data.lesson || "");
+marked.parse(data.lesson);
 
-xp+=10;
-conf+=3;
-chapters+=1;
-streak+=1;
-
-graphData.push(conf);
-
+xp += 10;
 update();
-renderChart();
-
 }
 
-/* PDF */
-async function downloadPDF(){
+/* 😂 MEME (NOW USING BACKEND) */
+async function makeMeme(){
 
-let lesson = document.getElementById("lesson").innerText;
+let topic = document.getElementById("topic").value;
+if(!topic) return;
 
-if(!lesson.includes("AI lesson will appear here")){
-
-const { jsPDF } = window.jspdf;
-const doc = new jsPDF();
-
-doc.text(doc.splitTextToSize(lesson,180),10,10);
-
-doc.save("ExamPanic_Lesson.pdf");
-
-}else{
-alert("Generate lesson first");
-}
-
-}
-
-/* CHAT */
-async function askAI(){
-
-let msg = document.getElementById("msg").value;
-if(!msg) return;
-
-chat.push({role:"user",text:msg});
-renderChat();
-
-let mode = document.getElementById("mode").value;
-
-try{
-
-let res = await fetch(API+"/chat",{
+let res = await fetch(API+"/meme",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
-body:JSON.stringify({message:mode+": "+msg})
+body:JSON.stringify({
+message: topic
+})
 });
 
 let data = await res.json();
 
-chat.push({role:"ai",text:data.reply || "No response"});
+document.getElementById("feed").innerHTML += `
+<div class="meme">
+${data.meme}
+<button onclick="copyText(this)">Copy</button>
+<button onclick="shareText('${data.meme}')">Share</button>
+</div>
+`;
 
-xp+=5;
-conf+=1;
-
-graphData.push(conf);
-
-localStorage.setItem("chatHistory",JSON.stringify(chat));
-
+xp += 5;
 update();
-renderChart();
-renderChat();
-
-}catch(err){
-chat.push({role:"ai",text:"Error"});
-renderChat();
 }
 
-}
+/* 📤 SHARE APP (VIRAL LOOP) */
+async function shareApp(){
 
-/* CHAT RENDER */
-function renderChat(){
-
-let box = document.getElementById("chat");
-box.innerHTML="";
-
-chat.forEach(m=>{
-box.innerHTML+=`
-<div class="msg ${m.role}">
-${marked.parse(m.text)}
-</div>`;
+let res = await fetch(API+"/share",{
+method:"POST"
 });
 
-box.scrollTop = box.scrollHeight;
+let data = await res.json();
+
+shares += 1;
+xp += data.bonus_xp;
+
+navigator.clipboard.writeText(window.location.href);
+
+alert("App link copied 🚀 +5 XP bonus!");
+
+update();
 }
 
-/* INIT */
-update();
-renderChart();
-renderChat();
+/* COPY */
+function copyText(btn){
+navigator.clipboard.writeText(btn.parentElement.innerText);
+alert("Copied 🔥");
+}
+
+/* SHARE MEME */
+function shareText(text){
+
+if(navigator.share){
+navigator.share({
+title:"AI Study OS Meme",
+text:text
+});
+}
+
+}
+
+/* UPDATE UI */
+function update(){
+console.log("XP:",xp,"Shares:",shares);
+}
 
 </script>
 
