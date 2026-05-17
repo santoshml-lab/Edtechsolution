@@ -1,13 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>🚀 ExamPanic OS v3</title>
+<title>🚀 ExamPanic OS v3 FINAL</title>
 
 <meta name="theme-color" content="#020617">
 
@@ -15,574 +12,136 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- PDF LIBRARY -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;}
 
 body{
-
-background:
-radial-gradient(circle at top left,#38bdf830,transparent 25%),
-radial-gradient(circle at bottom right,#9333ea30,transparent 25%),
-linear-gradient(135deg,#020617,#0f172a);
-
-background-size:400% 400%;
-
-animation:bgMove 12s ease infinite;
-
+background:#020617;
 color:white;
-
 padding:15px;
-
 min-height:100vh;
-
-overflow-x:hidden;
-
 }
 
-@keyframes bgMove{
-
-0%{
-background-position:0% 50%;
-}
-
-50%{
-background-position:100% 50%;
-}
-
-100%{
-background-position:0% 50%;
-}
-
-}
-
-.orb{
-
-position:fixed;
-
-width:250px;
-height:250px;
-
-border-radius:50%;
-
-filter:blur(90px);
-
-z-index:-1;
-
-opacity:0.5;
-
-}
-
-.orb1{
-
-background:#38bdf8;
-
-top:-50px;
-left:-50px;
-
-}
-
-.orb2{
-
-background:#9333ea;
-
-bottom:-50px;
-right:-50px;
-
-}
-
-header{
-
-text-align:center;
-
-margin-bottom:20px;
-
-}
-
-header h1{
-
-font-size:56px;
-
-color:#38bdf8;
-
-margin-top:15px;
-
-}
-
-header p{
-
-opacity:0.7;
-
-margin-top:10px;
-
-}
-
-.hero{
-
-padding:20px 10px;
-
-}
-
-.hero h2{
-
-font-size:58px;
-
-line-height:1.1;
-
-margin-top:15px;
-
-}
-
-.hero p{
-
-opacity:0.75;
-
-margin-top:10px;
-
-font-size:18px;
-
-}
-
-.badge{
-
-display:inline-block;
-
-padding:10px 18px;
-
-border-radius:999px;
-
-background:#0f172a;
-
-border:1px solid rgba(255,255,255,0.08);
-
-color:#38bdf8;
-
-font-size:14px;
-
-box-shadow:
-0 0 20px rgba(56,189,248,0.15);
-
-}
-
-.container{
-max-width:1200px;
-margin:auto;
-}
-
-.grid{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:15px;
-
-}
+.container{max-width:1200px;margin:auto;}
 
 .card{
-
-background:rgba(255,255,255,0.05);
-
-backdrop-filter:blur(18px);
-
-border:1px solid rgba(255,255,255,0.08);
-
-border-radius:24px;
-
-padding:20px;
-
-box-shadow:
-0 0 40px rgba(56,189,248,0.08);
-
-transition:0.3s;
-
-margin-bottom:18px;
-
-}
-
-.card:hover{
-
-transform:translateY(-4px);
-
-box-shadow:
-0 0 50px rgba(56,189,248,0.18);
-
-}
-
-.stats{
-
-display:grid;
-
-grid-template-columns:repeat(4,1fr);
-
-gap:12px;
-
-}
-
-.stat{
-
-background:#0f172a;
-
-padding:15px;
-
-border-radius:18px;
-
-text-align:center;
-
-border:1px solid rgba(255,255,255,0.05);
-
-transition:0.3s;
-
-}
-
-.stat:hover{
-
-transform:translateY(-4px);
-
 background:#111827;
-
+padding:20px;
+border-radius:18px;
+margin-bottom:15px;
 }
 
-.stat b{
-
-font-size:30px;
-
-color:#38bdf8;
-
-}
-
-input,
-select{
-
+input,select{
 width:100%;
-
-padding:14px;
-
-margin-top:12px;
-
-border:none;
-
-border-radius:14px;
-
+padding:12px;
+margin-top:10px;
+border-radius:10px;
 background:#0f172a;
-
+border:none;
 color:white;
-
-font-size:15px;
-
-outline:none;
-
-border:1px solid rgba(255,255,255,0.05);
-
 }
 
 button{
-
 width:100%;
-
-padding:14px;
-
-margin-top:12px;
-
+padding:12px;
+margin-top:10px;
 border:none;
-
-border-radius:14px;
-
-background:linear-gradient(
-45deg,
-#38bdf8,
-#0ea5e9
-);
-
-color:black;
-
+border-radius:10px;
+background:linear-gradient(45deg,#38bdf8,#0ea5e9);
 font-weight:700;
-
 cursor:pointer;
-
-transition:0.3s;
-
-box-shadow:
-0 0 25px rgba(56,189,248,0.35);
-
-}
-
-button:hover{
-
-transform:scale(1.03);
-
-box-shadow:
-0 0 40px rgba(56,189,248,0.6);
-
 }
 
 .pdf-btn{
-
-background:linear-gradient(
-45deg,
-#9333ea,
-#7e22ce
-);
-
+background:linear-gradient(45deg,#9333ea,#7e22ce);
 color:white;
-
-}
-
-#lesson{
-
-margin-top:15px;
-
-padding:18px;
-
-background:#0f172a;
-
-border-radius:18px;
-
-line-height:1.8;
-
-border-left:4px solid #38bdf8;
-
-min-height:120px;
-
-}
-
-.chat{
-
-height:320px;
-
-overflow:auto;
-
-background:#0f172a;
-
-padding:14px;
-
-border-radius:18px;
-
-margin-top:12px;
-
-border:1px solid rgba(255,255,255,0.05);
-
-}
-
-.msg{
-
-padding:12px;
-
-margin-top:10px;
-
-border-radius:14px;
-
-line-height:1.7;
-
-animation:fade 0.25s ease-in;
-
-}
-
-.user{
-
-background:#1e293b;
-
-border-left:4px solid #38bdf8;
-
-}
-
-.ai{
-
-background:#111827;
-
-border-left:4px solid #9333ea;
-
-}
-
-@keyframes fade{
-
-from{
-opacity:0;
-transform:translateY(10px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
-
-}
-
-canvas{
-
-background:#0f172a;
-
-padding:12px;
-
-border-radius:18px;
-
-margin-top:10px;
-
-}
-
-@media(max-width:768px){
-
-.grid{
-grid-template-columns:1fr;
 }
 
 .stats{
-grid-template-columns:1fr 1fr;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
 }
 
-.hero h2{
-font-size:38px;
+.stat{
+background:#0f172a;
+padding:10px;
+border-radius:10px;
+text-align:center;
 }
 
-header h1{
-font-size:38px;
+.chat{
+height:300px;
+overflow:auto;
+background:#0f172a;
+padding:10px;
+border-radius:12px;
 }
 
+.msg{padding:10px;margin-top:8px;border-radius:10px;}
+
+.user{background:#1e293b;}
+.ai{background:#111827;border-left:3px solid #9333ea;}
+
+canvas{
+background:#0f172a;
+padding:10px;
+border-radius:12px;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-
 <div class="container">
 
-<header>
-
-<div class="badge">
-⚡ AI Powered Learning OS
-</div>
-
 <h1>🚀 ExamPanic OS v3</h1>
-
-<p>
-Smart AI Learning + Analytics Engine
-</p>
-
-<div class="hero">
-
-<h2>
-Study Smarter.<br>
-Score Higher 🚀
-</h2>
-
-<p>
-Your futuristic AI classroom built for ICSE students.
-</p>
-
-</div>
-
-</header>
-
-<div class="card">
-
-🟢 AI Engine Online<br><br>
-
-⚡ Response Speed: 0.8s<br><br>
-
-🌍 Active Students: 1,284
-
-</div>
 
 <div class="card">
 
 <div class="stats">
-
-<div class="stat">
-<b id="xp">0</b><br>
-XP
-</div>
-
-<div class="stat">
-<b id="conf">50%</b><br>
-Confidence
-</div>
-
-<div class="stat">
-<b id="streak">1</b><br>
-Streak
-</div>
-
-<div class="stat">
-<b id="chapters">0</b><br>
-Chapters
-</div>
-
+<div class="stat"><b id="xp">0</b><br>XP</div>
+<div class="stat"><b id="conf">50%</b><br>Confidence</div>
+<div class="stat"><b id="streak">1</b><br>Streak</div>
+<div class="stat"><b id="chapters">0</b><br>Chapters</div>
 </div>
 
 </div>
 
 <div class="card">
-
-<h3>📊 Progress Graph</h3>
-
 <canvas id="chart"></canvas>
-
 </div>
 
-<div class="grid">
-
 <div class="card">
-
-<h3>📚 Learn Engine</h3>
 
 <input id="name" placeholder="Name">
-
 <input id="cls" placeholder="Class">
-
 <input id="sub" placeholder="Subject">
-
 <input id="chap" placeholder="Chapter">
 
-<button onclick="learn()">
-Generate Lesson
-</button>
+<button onclick="learn()">Generate Lesson</button>
+<button onclick="downloadPDF()" class="pdf-btn">Download PDF</button>
 
-<button onclick="downloadPDF()" class="pdf-btn">
-📄 Download PDF
-</button>
-
-<div id="lesson">
-AI lesson will appear here...
-</div>
+<div id="lesson">AI lesson will appear here...</div>
 
 </div>
 
 <div class="card">
 
-<h3>🤖 AI Chat</h3>
-
 <select id="mode">
-
 <option>Teacher</option>
 <option>Coach</option>
 <option>Strict Coach</option>
-
 </select>
 
 <div class="chat" id="chat"></div>
 
 <input id="msg" placeholder="Ask anything">
-
-<button onclick="askAI()">
-Send
-</button>
-
-</div>
+<button onclick="askAI()">Send</button>
 
 </div>
 
@@ -593,378 +152,162 @@ Send
 const API = "https://student-learning-system-r6bi.onrender.com";
 
 /* STATE */
+let xp = 0;
+let conf = 50;
+let streak = 1;
+let chapters = 0;
 
-let xp =
-parseInt(localStorage.getItem("xp")) || 0;
+/* CHAT */
+let chat = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
-let conf =
-parseInt(localStorage.getItem("conf")) || 50;
-
-let streak =
-parseInt(localStorage.getItem("streak")) || 1;
-
-let chapters =
-parseInt(localStorage.getItem("chapters")) || 0;
-
-
-
-
-let graphData = JSON.parse(
-localStorage.getItem("graph")
-) || [10,20,35];
-
+/* GRAPH */
+let graphData = JSON.parse(localStorage.getItem("graph")) || [10,20,35];
 let chart;
 
+/* UPDATE UI */
+function update(){
+document.getElementById("xp").innerText = xp;
+document.getElementById("conf").innerText = conf + "%";
+document.getElementById("streak").innerText = streak;
+document.getElementById("chapters").innerText = chapters;
+localStorage.setItem("graph",JSON.stringify(graphData));
+}
+
+/* CHART */
 function renderChart(){
 
-const ctx = document.getElementById('chart');
+const ctx = document.getElementById("chart");
 
-if(chart){
-chart.destroy();
-}
+if(chart) chart.destroy();
 
 chart = new Chart(ctx,{
-
-type:'line',
-
+type:"line",
 data:{
-
-labels:graphData.map((_,i)=>"Day " + (i+1)),
-
+labels:graphData.map((_,i)=>"Day "+(i+1)),
 datasets:[{
-
 label:"Confidence",
-
 data:graphData,
-
 borderColor:"#38bdf8",
-
-backgroundColor:"rgba(56,189,248,0.2)",
-
 tension:0.4,
-
 fill:true
-
 }]
-
-},
-
-options:{
-
-responsive:true
-
 }
-
 });
 
 }
 
-function update(){
-
-document.getElementById("xp").innerText = xp;
-
-document.getElementById("conf").innerText =
-conf + "%";
-
-document.getElementById("streak").innerText =
-streak;
-
-document.getElementById("chapters").innerText =
-chapters;
-
-localStorage.setItem(
-"graph",
-JSON.stringify(graphData)
-);
-
-}
-
+/* LEARN */
 async function learn(){
 
-let name =
-document.getElementById("name").value;
-
-let cls =
-document.getElementById("cls").value;
-
-let sub =
-document.getElementById("sub").value;
-
-let chap =
-document.getElementById("chap").value;
-
-if(!name || !cls || !sub || !chap){
-
-alert("Fill all fields 🚀");
-return;
-
-}
-
-document.getElementById("lesson").innerHTML =
-"⚡ Generating ICSE lesson...";
-
-try{
-
-let res = await fetch(API + "/learn",{
-
+let res = await fetch(API+"/learn",{
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
+headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
-
-student_name:name,
-student_class:cls,
-subject:sub,
-chapter:chap
-
+student_name:document.getElementById("name").value,
+student_class:document.getElementById("cls").value,
+subject:document.getElementById("sub").value,
+chapter:document.getElementById("chap").value
 })
-
 });
 
 let data = await res.json();
 
 document.getElementById("lesson").innerHTML =
-marked.parse(data.lesson || "No lesson");
-
-
-
-/* AUTO SAVE CHAPTER */
-
-await fetch(API + "/save-chapter",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-student_name:name,
-student_class:cls,
-subject:sub,
-chapter:chap
-
-})
-
-});
-
-
-
-/* ANALYTICS */
-
-xp += 10;
-
-conf += 3;
-
-chapters += 1;
-
-streak += 1;
-
-graphData.push(conf);
-
-
-
-/* SAVE LOCAL */
-
-localStorage.setItem("xp",xp);
-
-localStorage.setItem("conf",conf);
-
-localStorage.setItem("chapters",chapters);
-
-localStorage.setItem("streak",streak);
-
-update();
-
-renderChart();
-
-}
-
-catch(err){
-
-document.getElementById("lesson").innerHTML =
-"❌ Backend Error";
-
-}
-
-}
-
-
-let data = await res.json();
-
-document.getElementById("lesson").innerHTML =
-
 marked.parse(data.lesson || "");
 
-xp += 10;
-
-conf += 3;
-
-chapters += 1;
-
-streak += 1;
+xp+=10;
+conf+=3;
+chapters+=1;
+streak+=1;
 
 graphData.push(conf);
 
 update();
-
 renderChart();
 
 }
 
-/* PDF DOWNLOAD */
-
+/* PDF */
 async function downloadPDF(){
 
-let lesson =
-document.getElementById("lesson").innerText;
+let lesson = document.getElementById("lesson").innerText;
 
-if(
-!lesson ||
-lesson.includes("AI lesson will appear here")
-){
-
-alert("Generate lesson first 🚀");
-
-return;
-
-}
+if(!lesson.includes("AI lesson will appear here")){
 
 const { jsPDF } = window.jspdf;
-
 const doc = new jsPDF();
 
-doc.setFont("helvetica");
-
-doc.setFontSize(12);
-
-let lines =
-doc.splitTextToSize(lesson,180);
-
-doc.text(lines,15,20);
+doc.text(doc.splitTextToSize(lesson,180),10,10);
 
 doc.save("ExamPanic_Lesson.pdf");
 
+}else{
+alert("Generate lesson first");
 }
 
-let chat = JSON.parse(
-localStorage.getItem("chatHistory")
-) || [];
+}
 
+/* CHAT */
 async function askAI(){
 
-let msg =
-document.getElementById("msg").value;
-
+let msg = document.getElementById("msg").value;
 if(!msg) return;
 
-chat.push({
-role:"user",
-text:msg
-});
-
-renderChat();
-localStorage.setItem(
-"chatHistory",
-JSON.stringify(chat)
-);  
-
-document.getElementById("msg").value="";
-
-chat.push({
-role:"ai",
-text:"⚡ AI is thinking..."
-});
-
+chat.push({role:"user",text:msg});
 renderChat();
 
-let mode =
-document.getElementById("mode").value;
+let mode = document.getElementById("mode").value;
 
 try{
 
-let res = await fetch(API + "/chat",{
-
+let res = await fetch(API+"/chat",{
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-message: mode + ": " + msg
-})
-
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:mode+": "+msg})
 });
 
 let data = await res.json();
 
-chat.pop();
+chat.push({role:"ai",text:data.reply || "No response"});
 
-chat.push({
-role:"ai",
-text:data.reply || "No response"
-});
-
-renderChat();
-
-xp += 5;
-
-conf += 1;
+xp+=5;
+conf+=1;
 
 graphData.push(conf);
 
+localStorage.setItem("chatHistory",JSON.stringify(chat));
+
 update();
-
 renderChart();
-
-}
-
-catch(err){
-
-chat.pop();
-
-chat.push({
-role:"ai",
-text:"❌ Backend Error"
-});
-
 renderChat();
 
+}catch(err){
+chat.push({role:"ai",text:"Error"});
+renderChat();
 }
 
 }
 
+/* CHAT RENDER */
 function renderChat(){
 
-let box =
-document.getElementById("chat");
-
-box.innerHTML = "";
+let box = document.getElementById("chat");
+box.innerHTML="";
 
 chat.forEach(m=>{
-
-box.innerHTML += `
-
+box.innerHTML+=`
 <div class="msg ${m.role}">
 ${marked.parse(m.text)}
-</div>
-
-`;
-
+</div>`;
 });
 
 box.scrollTop = box.scrollHeight;
-
 }
 
+/* INIT */
 update();
-
 renderChart();
+renderChat();
 
 </script>
 
